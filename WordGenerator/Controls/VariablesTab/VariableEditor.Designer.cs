@@ -57,12 +57,12 @@ namespace WordGenerator.Controls
             this.valueSelector.DecimalPlaces = 3;
             this.valueSelector.Location = new System.Drawing.Point(107, 0);
             this.valueSelector.Maximum = new decimal(new int[] {
-            100000,
+            1000000000,
             0,
             0,
             0});
             this.valueSelector.Minimum = new decimal(new int[] {
-            100000,
+            1000000000,
             0,
             0,
             -2147483648});
@@ -129,12 +129,12 @@ namespace WordGenerator.Controls
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.helpOnSupportedOperationsToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(228, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(233, 26);
             // 
             // helpOnSupportedOperationsToolStripMenuItem
             // 
             this.helpOnSupportedOperationsToolStripMenuItem.Name = "helpOnSupportedOperationsToolStripMenuItem";
-            this.helpOnSupportedOperationsToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.helpOnSupportedOperationsToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.helpOnSupportedOperationsToolStripMenuItem.Text = "Help on supported operations";
             this.helpOnSupportedOperationsToolStripMenuItem.Click += new System.EventHandler(this.helpOnSupportedOperationsToolStripMenuItem_Click);
             // 
