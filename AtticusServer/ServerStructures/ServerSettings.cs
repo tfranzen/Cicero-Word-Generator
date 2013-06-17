@@ -427,6 +427,24 @@ namespace AtticusServer
             set { broadcastNetworkRecipients = value; }
         }
 
+
+
+        private List<CustomScale> myAnalogScales;
+
+        [Description("Map analog channels to custom scales."),
+        Category("Hardware")]
+        public List<CustomScale> analogScales
+        {
+            get
+            {
+                if (myAnalogScales == null) 
+                    myAnalogScales = new List<CustomScale>();
+                return myAnalogScales;
+            }
+            set { myAnalogScales = value; }
+        }
+
+
         public ServerSettings()
         {
             this.serverDeviceSettings = new Dictionary<string, DeviceSettings>();
@@ -436,7 +454,10 @@ namespace AtticusServer
             //this.aINames = new List<AnalogInNames>(); // now obsolete
             this.versionNumberAtFirstCreation = DataStructuresVersionNumber.CurrentVersion;
             this.versionNumberAtLastSerialization = DataStructuresVersionNumber.CurrentVersion;
+
+            this.analogScales = new List<CustomScale>();
         }
+
 
 
         #region Version Number Tracking

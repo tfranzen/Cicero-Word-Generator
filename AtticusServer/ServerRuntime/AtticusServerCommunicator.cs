@@ -2433,6 +2433,13 @@ namespace AtticusServer
                             {
                                 string channelName = justTheChannelName(analogs[j], devices[i]);
                                 HardwareChannel hc = new HardwareChannel(this.myServerSettings.ServerName, devices[i], channelName, HardwareChannel.HardwareConstants.ChannelTypes.analog);
+                                
+                                // check for custom scaling
+                                if(this.myServerSettings.analogScales.Exists(o => o.PhysicalChannel == hc.physicalChannelName())){
+                                    hc.UseCustomScale = true;
+                                    hc.CustomScale = this.myServerSettings.analogScales.Find(o => o.PhysicalChannel == hc.physicalChannelName()).Scale;
+                                }
+
                                 if (!serverSettings.ExcludedChannels.Contains(hc))
                                 {
                                     myHardwareChannels.Add(hc);

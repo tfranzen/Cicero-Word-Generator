@@ -114,6 +114,7 @@
       <DependentUpon>HardwareChannelsBrowser.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerRuntime\CustomScale.cs" />
     <Compile Include="Wrappers\NiSync.cs" />
     <EmbeddedResource Include="AtticusSplashForm.resx">
       <SubType>Designer</SubType>

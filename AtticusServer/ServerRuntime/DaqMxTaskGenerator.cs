@@ -865,12 +865,36 @@ namespace AtticusServer
             else
             groupDigitalChannels(digitalIDs, digitals, out port_digital_IDs, out usedPortNumbers, false);
 
+            //get analog scales from MAX
+            List<string> ascales = new List<string>(DaqSystem.Local.Scales);
+            
+
+
             //ok! create the channels.
 
             // analog first
             for (int i = 0; i < analogs.Count; i++)
             {
-                task.AOChannels.CreateVoltageChannel(analogs[i].physicalChannelName(), "", -10, 10, AOVoltageUnits.Volts);
+                if (analogs[i].UseCustomScale)  
+                {
+                    System.Console.WriteLine("Use scale \"" + analogs[i].CustomScale + "\" for channel \"" + analogs[i].physicalChannelName() + "\".");
+                    if (ascales.Contains(analogs[i].CustomScale))
+                    {
+                        CustomScale s = new CustomScale();
+                        s.Scale = analogs[i].CustomScale;
+                        System.Console.WriteLine("\t range: " + s.getMin() + " to " + s.getMax() + "\".");
+                        task.AOChannels.CreateVoltageChannel(analogs[i].physicalChannelName(), "", s.getMin(), s.getMax(), analogs[i].CustomScale);
+                    }
+                    else
+                    {
+                        throw new Exception("Custom scale \""+ analogs[i].CustomScale + "is not a scale recognized by DAQmx.");
+                    }
+                }
+                else
+                {
+                    System.Console.WriteLine("Use voltage scale for channel \"" + analogs[i].physicalChannelName() + "\".");
+                    task.AOChannels.CreateVoltageChannel(analogs[i].physicalChannelName(), "", -10, 10, AOVoltageUnits.Volts);
+                }
             }
 
             // now digital

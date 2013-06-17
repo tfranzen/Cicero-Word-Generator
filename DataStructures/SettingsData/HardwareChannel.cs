@@ -22,6 +22,24 @@ namespace DataStructures
         /// </summary>
         public bool gpibMasquerade;
 
+        private bool useCustomScale;
+        [Description("Use a custom scaling defined in NI MAX."),
+       Category("Analog")]
+        public bool UseCustomScale
+        {
+            get { return useCustomScale; }
+            set { useCustomScale = value; }
+        }
+
+        private string customScale;
+        [Description("The name of the custom scale defined in NI MAX."),
+       Category("Analog")]
+        public string CustomScale{
+            get {   if (customScale == null) return "";
+                    else return customScale; }
+            set { customScale = value; }
+        }
+
         public enum GpibMasqueradeType { NONE, RFSG };
         public GpibMasqueradeType myGpibMasqueradeType;
 
@@ -175,7 +193,6 @@ namespace DataStructures
         public HardwareChannel(string serverName, string deviceName, string channelName, HardwareChannel.HardwareConstants.ChannelTypes ct)
             : this(serverName, deviceName, channelName, "", ct)
         {
-            
         }
 
         public HardwareChannel(string serverName, string deviceName, string channelName, string channelDescription, HardwareChannel.HardwareConstants.ChannelTypes ct)
@@ -190,6 +207,8 @@ namespace DataStructures
             this.isUnAssigned = false;
             this.gpibAddress = new DataStructures.Gpib.Address();
             this.gpibDeviceType = HardwareConstants.GPIBDeviceType.Unknown;
+            this.useCustomScale = false;
+            this.customScale = "";
         }
 
         public HardwareChannel(string serverName, string deviceName, string channelName, string channelDescription, HardwareChannel.HardwareConstants.ChannelTypes ct, DataStructures.Gpib.Address gpibAddress, HardwareChannel.HardwareConstants.GPIBDeviceType gpibDeviceType)
@@ -200,7 +219,9 @@ namespace DataStructures
                 throw new Exception("Do not call gpib channel constructor for a non gpib device.");
             }
             this.gpibAddress = gpibAddress;
-            this.gpibDeviceType = gpibDeviceType;
+            this.gpibDeviceType = gpibDeviceType; 
+            useCustomScale = false;
+            customScale = "";
         }
 
  
