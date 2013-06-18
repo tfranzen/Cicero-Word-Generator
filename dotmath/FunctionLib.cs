@@ -84,7 +84,7 @@ namespace dotMath
 
 			eq.AddFunction( new CIf() );
 
-
+            eq.AddFunction(new CSecondsSince());
 		}
 	}
 
@@ -1028,4 +1028,77 @@ namespace dotMath
 		}
 	}
 
+
+
+
+    /// <summary>
+    ///  CSecondsSince class implements the absolute value (abs(x)) function.
+    /// </summary>
+    public class CSecondsSince : EqCompiler.CFunction
+    {
+        /// <summary>
+        /// An array of values associated with the function.
+        /// </summary>
+        ArrayList m_alValues;
+
+
+        public CSecondsSince()
+        {
+        }
+
+        /// <summary>
+        /// CSecondsSince.CreateInstance returns an instance of the CAbs object
+        /// with the passed CValue object(s).
+        /// </summary>
+        /// <param name="alValues">An arraylist of values passed by the compiler.</param>
+        /// <returns></returns>
+        public override EqCompiler.CFunction CreateInstance(ArrayList alValues)
+        {
+            CSecondsSince oAbs = new CSecondsSince();
+            oAbs.SetValue(alValues);
+
+            return oAbs;
+        }
+
+        /// <summary>
+        /// CSecondsSince.SetValue() retains the values in the arraylist for the current instance
+        /// </summary>
+        /// <param name="alValues">Arraylist of CValue objects</param>
+        public override void SetValue(ArrayList alValues)
+        {
+            CheckParms(alValues, 6);
+            m_alValues = alValues;
+        }
+
+        /// <summary>
+        ///  GetValue() is called by the compiler when the user requests the
+        ///  function to be evaluated.
+        /// </summary>
+        /// <returns>
+        /// a double value with absolute value applied to the
+        /// child parameter
+        /// </returns>
+        public override double GetValue()
+        {
+            EqCompiler.CValue oDay = (EqCompiler.CValue)m_alValues[0];
+            EqCompiler.CValue oMonth = (EqCompiler.CValue)m_alValues[1];
+            EqCompiler.CValue oYear = (EqCompiler.CValue)m_alValues[2];
+            EqCompiler.CValue oHour = (EqCompiler.CValue)m_alValues[3];
+            EqCompiler.CValue oMinute = (EqCompiler.CValue)m_alValues[4];
+            EqCompiler.CValue oSecond = (EqCompiler.CValue)m_alValues[5];
+            TimeSpan t = DateTime.Now - new DateTime((int)oYear.GetValue(), (int)oMonth.GetValue(), (int)oDay.GetValue(), (int)oHour.GetValue(), (int)oMinute.GetValue(), (int)oSecond.GetValue());
+            
+            return t.TotalSeconds;
+        }
+
+        /// <summary>
+        /// GetFunction() returns the function name as it appears syntactically
+        /// to the compiler.
+        /// </summary>
+        /// <returns></returns>
+        public override string GetFunction()
+        {
+            return "SecondsSince";
+        }
+    }
 }
