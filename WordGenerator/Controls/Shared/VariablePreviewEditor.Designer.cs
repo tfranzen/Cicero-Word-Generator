@@ -57,16 +57,8 @@
             // 
             this.nextValue.DecimalPlaces = 3;
             this.nextValue.Location = new System.Drawing.Point(231, 0);
-            this.nextValue.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.nextValue.Minimum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            -2147483648});
+            this.nextValue.Maximum = 1000000000000000;
+            this.nextValue.Minimum = -1000000000000000;
             this.nextValue.Name = "nextValue";
             this.nextValue.Size = new System.Drawing.Size(107, 20);
             this.nextValue.TabIndex = 2;
