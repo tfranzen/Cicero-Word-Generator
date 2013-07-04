@@ -790,7 +790,7 @@ namespace WordGenerator
                 bool useLoops = false;
                 foreach (TimestepGroup tsg in sequence.TimestepGroups)
                 {
-                    if (tsg.LoopTimestepGroup && sequence.TimestepGroupIsLoopable(tsg) && tsg.LoopCountInt > 1)
+                    if (tsg.GroupEnabled && tsg.LoopTimestepGroup && sequence.TimestepGroupIsLoopable(tsg) && tsg.LoopCountInt > 1)
                     {
                         useLoops = true;
                     }
