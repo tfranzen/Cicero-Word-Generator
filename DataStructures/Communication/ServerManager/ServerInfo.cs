@@ -35,6 +35,19 @@ namespace DataStructures
             set { serverAddress = value; }
         }
 
+        private int serverPort;
+
+        [Description("IP port of the server. Defaults to 5678.")]
+        public int ServerPort
+        {
+            get
+            {
+                if (serverPort == 0) serverPort = 5678; 
+                return serverPort;
+            }
+            set { serverPort = value; }
+        }
+
         private string serverName;
 
         [Description("Name of the server. This is determined by conencting to the server.")]
@@ -61,6 +74,7 @@ namespace DataStructures
             connectOnStartup = false;
             ServerAddress = "localhost";
             serverName = "";
+            serverPort = 5678;
         }
     }
 }

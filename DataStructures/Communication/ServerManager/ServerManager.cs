@@ -355,7 +355,7 @@ namespace DataStructures
                 throw new Exception("server_connect_proc was passed an object other than a ServerInfo.");
 
             communicators[server] = (ServerCommunicator)Activator.GetObject(typeof(ServerCommunicator),
-            "tcp://" + server.ServerAddress + ":5678/serverCommunicator");
+            "tcp://" + server.ServerAddress + ":" + server.ServerPort + "/serverCommunicator");
         }
 
         #endregion
