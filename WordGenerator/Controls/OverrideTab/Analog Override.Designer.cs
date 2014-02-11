@@ -62,8 +62,13 @@ namespace WordGenerator
             // 
             this.numericUpDown1.DecimalPlaces = 4;
             this.numericUpDown1.Location = new System.Drawing.Point(250, 4);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.numericUpDown1.Minimum = new decimal(new int[] {
-            100,
+            1000,
             0,
             0,
             -2147483648});

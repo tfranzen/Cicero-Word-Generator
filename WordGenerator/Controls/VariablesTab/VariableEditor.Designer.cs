@@ -57,8 +57,8 @@ namespace WordGenerator.Controls
             this.valueSelector.DecimalPlaces = 3;
             this.valueSelector.Location = new System.Drawing.Point(107, 0);
             this.valueSelector.Maximum = new decimal(new int[] {
-            1000000000,
-            0,
+            -526774108,
+            147,
             0,
             0});
             this.valueSelector.Minimum = new decimal(new int[] {

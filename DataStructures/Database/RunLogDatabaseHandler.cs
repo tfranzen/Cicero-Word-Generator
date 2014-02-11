@@ -115,17 +115,26 @@ namespace DataStructures.Database
 
         private void addVariables(string fileName, RunLog log)
         {
+            MySqlCommand cmd = new MySqlCommand(@"INSERT INTO filelist_variablevalue
+                       (name, value, runlog_id, list) 
+                       VALUES (@name, @value, @runlog, @list)", this.conn);
+            cmd.Parameters.AddWithValue("@runlog", fileName);
+            cmd.Parameters.Add("@name", MySqlDbType.VarChar);
+            cmd.Parameters.Add("@value", MySqlDbType.Double);
+            cmd.Parameters.Add("@list", MySqlDbType.Byte);
+
+            cmd.Prepare();
             foreach (Variable var in log.RunSequence.Variables)
             {
-                MySqlCommand cmd = new MySqlCommand(@"INSERT INTO filelist_variablevalue
-                       (name, value, runlog_id) 
-                       VALUES (@name, @value, @runlog)", this.conn);
 
-                cmd.Parameters.AddWithValue("@name", var.VariableName);
-                cmd.Parameters.AddWithValue("@value", var.VariableValue);
-                cmd.Parameters.AddWithValue("@runlog", fileName);
-
-                cmd.ExecuteNonQuery();
+                if (var.ListDriven)
+                {
+                    cmd.Parameters["@name"].Value = var.VariableName;
+                    cmd.Parameters["@value"].Value = var.VariableValue;
+                    cmd.Parameters["@list"].Value = var.ListNumber;
+                    try { cmd.ExecuteNonQuery(); }
+                    catch (Exception ex) { };
+                }
             }
         }
 

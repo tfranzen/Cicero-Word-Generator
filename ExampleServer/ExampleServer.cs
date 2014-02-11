@@ -11,7 +11,7 @@ namespace Virgil
 {
     class ExampleServer : ServerCommunicator
     {
-
+        private double lastliststart;
         /// <summary>
         /// To be called to add messages to the server message log. Eventually may support logging to a file
         /// as well as to the screen.
@@ -92,6 +92,29 @@ namespace Virgil
 
         public override bool setSequence(SequenceData sequence)
         {
+            string listBoundVariableValues ="", listBoundVariableNames="";
+            double liststart=0;
+            foreach (Variable var in sequence.Variables)
+            {
+                if (var.VariableName == "ListStartTime")
+                {
+                    liststart = var.VariableValue;
+                }
+                if (var.ListDriven && !var.PermanentVariable)
+                {
+                    
+                    listBoundVariableNames += var.VariableName + "\t";
+                    listBoundVariableValues += var.VariableValue.ToString() + "\t";
+                }
+            }
+            if (liststart != lastliststart)
+            {
+                messageLog(this, new MessageEvent("------------------------"));
+                messageLog(this, new MessageEvent(listBoundVariableNames));
+
+            }
+            lastliststart = liststart;
+            messageLog(this, new MessageEvent(listBoundVariableValues));
             return true;
         }
 
@@ -137,7 +160,7 @@ namespace Virgil
             {
                 lock (marshalLock)
                 {
-                    tcpChannel = new TcpChannel(5678);
+                    tcpChannel = new TcpChannel(5679);
                     ChannelServices.RegisterChannel(tcpChannel, false);
                     objRef = RemotingServices.Marshal(this, "serverCommunicator");
                 }

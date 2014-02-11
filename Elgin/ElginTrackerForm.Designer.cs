@@ -30,13 +30,6 @@ namespace Elgin
         {
             this.components = new System.ComponentModel.Container();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.variableColumnSettingsStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.varNameSelector = new System.Windows.Forms.ToolStripComboBox();
-            this.assignVariableByVariableIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.varNumSelector = new System.Windows.Forms.ToolStripComboBox();
-            this.unassignToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.columnVisibility = new System.Windows.Forms.CheckedListBox();
             this.CloseButton = new System.Windows.Forms.DataGridViewButtonColumn();
             this.SeqName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IterNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,12 +38,19 @@ namespace Elgin
             this.SequenceDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CalibrationShot = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VarA = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.variableColumnSettingsStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.varNameSelector = new System.Windows.Forms.ToolStripComboBox();
+            this.assignVariableByVariableIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.varNumSelector = new System.Windows.Forms.ToolStripComboBox();
+            this.unassignToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VarB = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VarC = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VarD = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VarE = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VarF = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VarG = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnVisibility = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.variableColumnSettingsStrip.SuspendLayout();
             this.SuspendLayout();
@@ -86,66 +86,8 @@ namespace Elgin
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(575, 618);
             this.dataGridView1.TabIndex = 1;
-            this.dataGridView1.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellMouseEnter);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // variableColumnSettingsStrip
-            // 
-            this.variableColumnSettingsStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.hideToolStripMenuItem,
-            this.assignVariableByVariableIDToolStripMenuItem,
-            this.unassignToolStripMenuItem});
-            this.variableColumnSettingsStrip.Name = "variableColumnSettingsStrip";
-            this.variableColumnSettingsStrip.Size = new System.Drawing.Size(236, 70);
-            // 
-            // hideToolStripMenuItem
-            // 
-            this.hideToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.varNameSelector});
-            this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.hideToolStripMenuItem.Text = "Assign Variable by Name";
-            // 
-            // varNameSelector
-            // 
-            this.varNameSelector.Name = "varNameSelector";
-            this.varNameSelector.Size = new System.Drawing.Size(121, 21);
-            this.varNameSelector.DropDown += new System.EventHandler(this.varNameSelector_DropDown);
-            this.varNameSelector.DropDownClosed += new System.EventHandler(this.varNameSelector_DropDownClosed);
-            // 
-            // assignVariableByVariableIDToolStripMenuItem
-            // 
-            this.assignVariableByVariableIDToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.varNumSelector});
-            this.assignVariableByVariableIDToolStripMenuItem.Name = "assignVariableByVariableIDToolStripMenuItem";
-            this.assignVariableByVariableIDToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.assignVariableByVariableIDToolStripMenuItem.Text = "Assign Variable by Variable ID#";
-            // 
-            // varNumSelector
-            // 
-            this.varNumSelector.Name = "varNumSelector";
-            this.varNumSelector.Size = new System.Drawing.Size(121, 21);
-            this.varNumSelector.DropDown += new System.EventHandler(this.varNumSelector_DropDown);
-            this.varNumSelector.DropDownClosed += new System.EventHandler(this.varNumSelector_DropDownClosed);
-            // 
-            // unassignToolStripMenuItem
-            // 
-            this.unassignToolStripMenuItem.Name = "unassignToolStripMenuItem";
-            this.unassignToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.unassignToolStripMenuItem.Text = "Unassign";
-            this.unassignToolStripMenuItem.Click += new System.EventHandler(this.unassignToolStripMenuItem_Click);
-            // 
-            // columnVisibility
-            // 
-            this.columnVisibility.CheckOnClick = true;
-            this.columnVisibility.Dock = System.Windows.Forms.DockStyle.Left;
-            this.columnVisibility.FormattingEnabled = true;
-            this.columnVisibility.Location = new System.Drawing.Point(0, 0);
-            this.columnVisibility.Name = "columnVisibility";
-            this.columnVisibility.Size = new System.Drawing.Size(134, 604);
-            this.columnVisibility.TabIndex = 4;
-            this.columnVisibility.SelectedIndexChanged += new System.EventHandler(this.columnVisibility_SelectedIndexChanged);
-            this.columnVisibility.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.columnVisibility_ItemCheck);
+            this.dataGridView1.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellMouseEnter);
             // 
             // CloseButton
             // 
@@ -203,6 +145,52 @@ namespace Elgin
             this.VarA.ReadOnly = true;
             this.VarA.Visible = false;
             // 
+            // variableColumnSettingsStrip
+            // 
+            this.variableColumnSettingsStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hideToolStripMenuItem,
+            this.assignVariableByVariableIDToolStripMenuItem,
+            this.unassignToolStripMenuItem});
+            this.variableColumnSettingsStrip.Name = "variableColumnSettingsStrip";
+            this.variableColumnSettingsStrip.Size = new System.Drawing.Size(236, 70);
+            // 
+            // hideToolStripMenuItem
+            // 
+            this.hideToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.varNameSelector});
+            this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.hideToolStripMenuItem.Text = "Assign Variable by Name";
+            // 
+            // varNameSelector
+            // 
+            this.varNameSelector.Name = "varNameSelector";
+            this.varNameSelector.Size = new System.Drawing.Size(121, 23);
+            this.varNameSelector.DropDown += new System.EventHandler(this.varNameSelector_DropDown);
+            this.varNameSelector.DropDownClosed += new System.EventHandler(this.varNameSelector_DropDownClosed);
+            // 
+            // assignVariableByVariableIDToolStripMenuItem
+            // 
+            this.assignVariableByVariableIDToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.varNumSelector});
+            this.assignVariableByVariableIDToolStripMenuItem.Name = "assignVariableByVariableIDToolStripMenuItem";
+            this.assignVariableByVariableIDToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.assignVariableByVariableIDToolStripMenuItem.Text = "Assign Variable by Variable ID#";
+            // 
+            // varNumSelector
+            // 
+            this.varNumSelector.Name = "varNumSelector";
+            this.varNumSelector.Size = new System.Drawing.Size(121, 23);
+            this.varNumSelector.DropDown += new System.EventHandler(this.varNumSelector_DropDown);
+            this.varNumSelector.DropDownClosed += new System.EventHandler(this.varNumSelector_DropDownClosed);
+            // 
+            // unassignToolStripMenuItem
+            // 
+            this.unassignToolStripMenuItem.Name = "unassignToolStripMenuItem";
+            this.unassignToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.unassignToolStripMenuItem.Text = "Unassign";
+            this.unassignToolStripMenuItem.Click += new System.EventHandler(this.unassignToolStripMenuItem_Click);
+            // 
             // VarB
             // 
             this.VarB.ContextMenuStrip = this.variableColumnSettingsStrip;
@@ -250,6 +238,18 @@ namespace Elgin
             this.VarG.Name = "VarG";
             this.VarG.ReadOnly = true;
             this.VarG.Visible = false;
+            // 
+            // columnVisibility
+            // 
+            this.columnVisibility.CheckOnClick = true;
+            this.columnVisibility.Dock = System.Windows.Forms.DockStyle.Left;
+            this.columnVisibility.FormattingEnabled = true;
+            this.columnVisibility.Location = new System.Drawing.Point(0, 0);
+            this.columnVisibility.Name = "columnVisibility";
+            this.columnVisibility.Size = new System.Drawing.Size(134, 618);
+            this.columnVisibility.TabIndex = 4;
+            this.columnVisibility.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.columnVisibility_ItemCheck);
+            this.columnVisibility.SelectedIndexChanged += new System.EventHandler(this.columnVisibility_SelectedIndexChanged);
             // 
             // ElginTrackerForm
             // 

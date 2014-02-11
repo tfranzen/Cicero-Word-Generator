@@ -778,6 +778,15 @@ namespace WordGenerator
                 }
 
 
+                // HACK: make liststarttime accessible to servers by using a variable
+                foreach (Variable var in sequence.Variables)
+                {
+                    if (var.VariableName == "ListStartTime")
+                    {
+                        var.VariableValue = (formCreationTime.ToUniversalTime().Ticks/10000000);
+                    }
+                }
+
                 if (variablePreviewForm != null)
                 {
                     addMessageLogText(this, new MessageEvent("Updating variables according to variable preview window..."));

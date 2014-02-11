@@ -43,7 +43,7 @@ namespace Virgil
 
         public void addMessageLogText(object sender, MessageEvent e)
         {
-            Action addText = () => this.textBox1.AppendText(e.MyTime.ToString() + " " + sender.ToString() + ": " + e.ToString() + "\r\n");
+            Action addText = () => this.textBox1.AppendText(/*e.MyTime.ToString() + " " + sender.ToString() + ": " +*/ e.ToString() + "\r\n");
             BeginInvoke(addText);
         }
 

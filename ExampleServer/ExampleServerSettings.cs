@@ -7,7 +7,7 @@ namespace Virgil
 {
     public class ExampleServerSettings : ServerSettingsInterface
     {
-        private string serverName;
+        private string serverName = "Logger";
 
         public string ServerName
         {
