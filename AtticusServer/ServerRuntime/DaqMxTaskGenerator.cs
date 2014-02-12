@@ -600,23 +600,23 @@ namespace AtticusServer
                         throw new Exception("Unable to allocate digital buffer for device " + deviceName + ". Reason: " + e.Message + "\n" + e.StackTrace);
                     }
 
-                    for (int i = 0; i < usedPortNumbers.Count; i++)
+                    for (int i = 0; i < usedPortNumbers.Count; i++) // loop over ports
                     {
                         int portNum = usedPortNumbers[i];
                         byte digitalBitMask = 1;
-                        for (int lineNum = 0; lineNum < 8; lineNum++)
+                        for (int lineNum = 0; lineNum < 8; lineNum++) //loop over lines
                         {
                             int digitalID = port_digital_IDs[portNum][lineNum];
-                            if (digitalID != -1)
+                            if (digitalID != -1)// valid channel
                             {
                                 System.Console.WriteLine("Digital Channel \"" + digitalID + "\"");
-                                if (settings.logicalChannelManager.Digitals[digitalID].TogglingChannel)
+                                if (settings.logicalChannelManager.Digitals[digitalID].TogglingChannel) // Toggling Channel
                                 {
                                     System.Console.WriteLine("Digital Channel " + digitalID + " is toggling channel");
 
                                     getDigitalTogglingBuffer(singleChannelBuffer);
                                 }
-                                else if (settings.logicalChannelManager.Digitals[digitalID].overridden)
+                                else if (settings.logicalChannelManager.Digitals[digitalID].overridden) // Overriden
                                 {
                                     for (int j = 0; j < singleChannelBuffer.Length; j++)
                                     {
@@ -625,7 +625,7 @@ namespace AtticusServer
                                     System.Console.WriteLine("Digital Channel " + digitalID + " is overriden");
 
                                 }
-                                else if (settings.logicalChannelManager.Digitals[digitalID].SignChannelFor != -1)
+                                else if (settings.logicalChannelManager.Digitals[digitalID].SignChannelFor != -1) // sign channel
                                 {
                                     double[] tmpBuffer = new double[nSamples];
                                     sequence.computeAnalogBuffer(settings.logicalChannelManager.Digitals[digitalID].SignChannelFor, timeStepSize,tmpBuffer);
@@ -636,7 +636,7 @@ namespace AtticusServer
                                         singleChannelBuffer[j] = (tmpBuffer[j]<0);
                                     }
                                 }
-                                else
+                                else   //regular channel
                                 {
 
                                     sequence.computeDigitalBuffer(digitalID, timeStepSize, singleChannelBuffer);
@@ -649,14 +649,14 @@ namespace AtticusServer
                                         digitalBuffer[i, j] |= digitalBitMask;
                                 }
 
-                            }
+                            }//valid channel
                             digitalBitMask = (byte)(digitalBitMask << 1);
-                        }
+                        }//loop over lines
                         for (int j = nBaseSamples; j < nSamples; j++)
                         {
                             digitalBuffer[i, j] = digitalBuffer[i, j - 1];
                         }
-                    }
+                    }// loop over ports
                     singleChannelBuffer = null;
                     System.GC.Collect();
                     DigitalMultiChannelWriter writer = new DigitalMultiChannelWriter(task.Stream);
