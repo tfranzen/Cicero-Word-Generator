@@ -46,12 +46,12 @@ namespace AtticusServer
             return "RS232 Logical Channel " + logicalChannelID + " ";
         }
 
-        public RS232Task(NationalInstruments.VisaNS.SerialSession device)
+        public RS232Task(NationalInstruments.VisaNS.MessageBasedSession device)
         {
             this.device = device;
         }
 
-        NationalInstruments.VisaNS.SerialSession device;
+        NationalInstruments.VisaNS.MessageBasedSession device;
 
 
         public bool generateBuffer(SequenceData sequence, DeviceSettings deviceSettings, HardwareChannel hc, int logicalChannelID)
@@ -190,7 +190,10 @@ namespace AtticusServer
                 {
 
                     device.Write(commandBuffer[currentCommand].command);
-                    device.Flush(BufferTypes.OutBuffer, false);
+                   // if(device.HardwareInterfaceType == HardwareInterfaceType.Serial)
+                       
+                   // device.Flush(BufferTypes.OutBuffer, false);
+                    // FIX!
 
                     AtticusServer.server.messageLog(this, new MessageEvent("Output rs232 command: " + commandBuffer[currentCommand].command, 1, MessageEvent.MessageTypes.Log, MessageEvent.MessageCategories.Serial));
 

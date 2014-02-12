@@ -832,7 +832,7 @@ namespace AtticusServer
                             HardwareChannel hc = usedRS232Channels[rs232ID];
                             //NationalInstruments.VisaNS.SerialSession device = new NationalInstruments.VisaNS.SerialSession(hc.ChannelName);
 
-                            NationalInstruments.VisaNS.SerialSession device;
+                            NationalInstruments.VisaNS.MessageBasedSession device;
 
                             try
                             {
@@ -1119,17 +1119,18 @@ namespace AtticusServer
             }
         }
 
-        private Dictionary<HardwareChannel, NationalInstruments.VisaNS.SerialSession> serialSessions;
+        private Dictionary<HardwareChannel, NationalInstruments.VisaNS.MessageBasedSession> serialSessions;
 
-        private NationalInstruments.VisaNS.SerialSession getSerialSession(HardwareChannel hc)
+        private NationalInstruments.VisaNS.MessageBasedSession getSerialSession(HardwareChannel hc)
         {
 
             if (serialSessions == null)
-                serialSessions = new Dictionary<HardwareChannel, NationalInstruments.VisaNS.SerialSession>();
+                serialSessions = new Dictionary<HardwareChannel, NationalInstruments.VisaNS.MessageBasedSession>();
 
             if (!serialSessions.ContainsKey(hc))
             {
-                NationalInstruments.VisaNS.SerialSession device = (NationalInstruments.VisaNS.SerialSession)NationalInstruments.VisaNS.ResourceManager.GetLocalManager().Open(hc.ChannelName, NationalInstruments.VisaNS.AccessModes.LoadConfig, 100);
+                NationalInstruments.VisaNS.MessageBasedSession device = (NationalInstruments.VisaNS.MessageBasedSession)NationalInstruments.VisaNS.ResourceManager.GetLocalManager().Open(hc.ChannelName);
+                
                 serialSessions.Add(hc, device);
             }
 
@@ -1388,7 +1389,7 @@ namespace AtticusServer
                             RS232GroupChannelData channelData = rs232Group.ChannelDatas[channelID];
                             if (channelData.DataType == RS232GroupChannelData.RS232DataType.Raw)
                             {
-                                NationalInstruments.VisaNS.SerialSession ss = getSerialSession(hc);
+                                NationalInstruments.VisaNS.MessageBasedSession ss = getSerialSession(hc);
                                 ss.Write(RS232Task.AddNewlineCharacters(channelData.RawString));
                                 messageLog(this, new MessageEvent("Wrote rs232 command " + channelData.RawString));
                             }
@@ -1398,7 +1399,7 @@ namespace AtticusServer
                                 {
                                     foreach (StringParameterString sps in channelData.StringParameterStrings)
                                     {
-                                        NationalInstruments.VisaNS.SerialSession ss = getSerialSession(hc);
+                                        NationalInstruments.VisaNS.MessageBasedSession ss = getSerialSession(hc);
                                         string rawCommand = sps.ToString();
                                         string command = RS232Task.AddNewlineCharacters(rawCommand);
                                         ss.Write(command);
@@ -2640,9 +2641,9 @@ namespace AtticusServer
                             NationalInstruments.VisaNS.HardwareInterfaceType hType;
                             short chanNum;
                             VisaRescources.ParseResource(s, out hType, out chanNum);
-                            if (hType == NationalInstruments.VisaNS.HardwareInterfaceType.Serial)
+                            if ((hType == NationalInstruments.VisaNS.HardwareInterfaceType.Serial) || true)
                             {
-                                NationalInstruments.VisaNS.SerialSession ss = (NationalInstruments.VisaNS.SerialSession)NationalInstruments.VisaNS.ResourceManager.GetLocalManager().Open(s);
+                                NationalInstruments.VisaNS.MessageBasedSession ss = (NationalInstruments.VisaNS.MessageBasedSession)NationalInstruments.VisaNS.ResourceManager.GetLocalManager().Open(s);
 
 
 
