@@ -1215,7 +1215,7 @@ namespace AtticusServer
                     long expectedGenerated = 0;
 
                     messageLog(this, new MessageEvent("Generating buffer for " + dev));
-                    Task[] tasks = DaqMxTaskGenerator.createDaqMxTask(this,dev,
+                    Task task = DaqMxTaskGenerator.createDaqMxTask(this,dev,
                         deviceSettings,
                         sequence,
                         settings,
@@ -1224,15 +1224,11 @@ namespace AtticusServer
                         serverSettings,
                         out expectedGenerated);
 
-                    int i = 1;
-                    foreach (Task task in tasks)
-                    {
-                        task.Done += new TaskDoneEventHandler(aTaskFinished);
+                    task.Done += new TaskDoneEventHandler(aTaskFinished);
 
-                        daqMxTasks.Add(dev + '_'+i++, task);
-                        messageLog(this, new MessageEvent("Buffer for " + dev + " generated. " + task.Stream.Buffer.OutputBufferSize + " samples per channel. On board buffer size " + task.Stream.Buffer.OutputOnBoardBufferSize + " samples per channel."));
-                    }
-                   
+                    daqMxTasks.Add(dev, task);
+                    messageLog(this, new MessageEvent("Buffer for " + dev + " generated. " + task.Stream.Buffer.OutputBufferSize + " samples per channel. On board buffer size " + task.Stream.Buffer.OutputOnBoardBufferSize + " samples per channel."));
+
                     if (expectedGenerated != 0)
                     {
                         expectedNumberOfSamplesGenerated.Add(dev, expectedGenerated);

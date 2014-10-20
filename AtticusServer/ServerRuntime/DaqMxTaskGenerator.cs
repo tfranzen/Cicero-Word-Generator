@@ -473,6 +473,7 @@ namespace AtticusServer
 
             return task;
 
+
         }
 
      
@@ -488,26 +489,25 @@ namespace AtticusServer
         /// <param name="usedDigitalChannels">digital channels which reside on this server.</param>
         /// <param name="usedAnalogChannels">analog channels which reside on this server</param>
         /// <returns></returns>
-        public static Task[] createDaqMxTask(AtticusServerCommunicator sender, string deviceName, DeviceSettings deviceSettings, SequenceData sequence, 
+        public static Task createDaqMxTask(AtticusServerCommunicator sender, string deviceName, DeviceSettings deviceSettings, SequenceData sequence, 
             SettingsData settings, Dictionary<int, HardwareChannel> usedDigitalChannels, Dictionary<int, HardwareChannel> usedAnalogChannels, 
             ServerSettings serverSettings, out long expectedSamplesGenerated)
         {
             expectedSamplesGenerated = 0;
 
             Task task = new Task(deviceName + " output task");
+
             Task DOtask = new Task(deviceName + " output DO task");
 
-            List<int> analogIDs, dummyanalogIDs;
-            List<HardwareChannel> analogs, dummyanalogs;
-            Dictionary<int, int[]> port_digital_IDs, dummyport_digital_IDs;
-            List<int> usedPortNumbers, dummyusedPortNumbers;
+            List<int> analogIDs;
+            List<HardwareChannel> analogs;
+            Dictionary<int, int[]> port_digital_IDs;
+            List<int> usedPortNumbers;
 
             //boolean to check for 6363 device, which requires 32lines per port
             
             // Parse and create channels.
-            parseAndCreateChannels(sender, deviceName, deviceSettings, new Dictionary<int, HardwareChannel>(), usedAnalogChannels, task, out analogIDs, out analogs, out dummyport_digital_IDs, out dummyusedPortNumbers);
-            parseAndCreateChannels(sender, deviceName, deviceSettings, usedDigitalChannels, new Dictionary<int, HardwareChannel>(), DOtask, out dummyanalogIDs, out dummyanalogs, out port_digital_IDs, out usedPortNumbers);
-
+            parseAndCreateChannels(sender,deviceName,deviceSettings, usedDigitalChannels, usedAnalogChannels, task, out analogIDs, out analogs, out port_digital_IDs, out usedPortNumbers);
 
 
 
@@ -523,8 +523,8 @@ namespace AtticusServer
             {
                 if (deviceSettings.UseCustomDigitalTransferSettings)
                 {
-                    DOtask.DOChannels.All.DataTransferMechanism = deviceSettings.DigitalDataTransferMechanism;
-                    DOtask.DOChannels.All.DataTransferRequestCondition = deviceSettings.DigitalDataTransferCondition;
+                    task.DOChannels.All.DataTransferMechanism = deviceSettings.DigitalDataTransferMechanism;
+                    task.DOChannels.All.DataTransferRequestCondition = deviceSettings.DigitalDataTransferCondition;
                 }
             }
 
@@ -553,26 +553,18 @@ namespace AtticusServer
                 if (deviceSettings.MySampleClockSource == DeviceSettings.SampleClockSource.DerivedFromMaster)
                 {
                     task.Timing.ConfigureSampleClock("", deviceSettings.SampleClockRate, deviceSettings.ClockEdge, SampleQuantityMode.FiniteSamples, nSamples);
-                    
-                     if (usedPortNumbers.Count != 0)
-                        DOtask.Timing.ConfigureSampleClock("", deviceSettings.SampleClockRate, deviceSettings.ClockEdge, SampleQuantityMode.FiniteSamples, nSamples);
-
                     //"" empty string defaults to analog input sample clock.
                 }
                 else
                 {
                     task.Timing.ConfigureSampleClock(deviceSettings.SampleClockExternalSource, deviceSettings.SampleClockRate, deviceSettings.ClockEdge, SampleQuantityMode.FiniteSamples, nSamples);
-                    if (usedPortNumbers.Count != 0) 
-                        DOtask.Timing.ConfigureSampleClock(deviceSettings.SampleClockExternalSource, deviceSettings.SampleClockRate, deviceSettings.ClockEdge, SampleQuantityMode.FiniteSamples, nSamples);
                 }
                 if (deviceSettings.MasterTimebaseSource != "" && deviceSettings.MasterTimebaseSource != null)
                 {
                     task.Timing.MasterTimebaseSource = deviceSettings.MasterTimebaseSource.ToString();
-                    if (usedPortNumbers.Count != 0) 
-                        DOtask.Timing.MasterTimebaseSource = deviceSettings.MasterTimebaseSource.ToString();
                 }
 
-                
+
                 // Analog first...
 
                 if (analogIDs.Count != 0)
@@ -705,7 +697,7 @@ namespace AtticusServer
                             }
                             singleChannelBuffer = null;
                             System.GC.Collect();
-                            DigitalMultiChannelWriter writer = new DigitalMultiChannelWriter(DOtask.Stream);
+                            DigitalMultiChannelWriter writer = new DigitalMultiChannelWriter(task.Stream);
                             writer.WriteMultiSamplePort(false, digitalBuffer);
                             
                             /// Digital cards report the number of generated samples as a multiple of 4
@@ -770,7 +762,7 @@ namespace AtticusServer
                        }
                        singleChannelBuffer = null;
                        System.GC.Collect();
-                       DigitalMultiChannelWriter writer = new DigitalMultiChannelWriter(DOtask.Stream);
+                       DigitalMultiChannelWriter writer = new DigitalMultiChannelWriter(task.Stream);
                        writer.WriteMultiSamplePort(false, digitalBuffer);
                        /// Digital cards report the number of generated samples as a multiple of 4
                        expectedSamplesGenerated = nSamples;
@@ -819,7 +811,6 @@ namespace AtticusServer
                 else
                 {
                     task.Timing.ConfigureSampleClock(deviceSettings.SampleClockExternalSource, deviceSettings.SampleClockRate, deviceSettings.ClockEdge, SampleQuantityMode.FiniteSamples, nSamples);
-                    DOtask.Timing.ConfigureSampleClock(deviceSettings.SampleClockExternalSource, deviceSettings.SampleClockRate, deviceSettings.ClockEdge, SampleQuantityMode.FiniteSamples, nSamples);
                 }
 
 
@@ -961,7 +952,7 @@ namespace AtticusServer
                         }
                         singleChannelBuffer = null;
                         System.GC.Collect();
-                        DigitalMultiChannelWriter writer = new DigitalMultiChannelWriter(DOtask.Stream);
+                        DigitalMultiChannelWriter writer = new DigitalMultiChannelWriter(task.Stream);
                         writer.WriteMultiSamplePort(false, digitalBuffer);
                         // digital cards report number of samples generated up to multiple of 4
                         expectedSamplesGenerated = nSamples;
@@ -1024,7 +1015,7 @@ namespace AtticusServer
                         }
                         singleChannelBuffer = null;
                         System.GC.Collect();
-                        DigitalMultiChannelWriter writer = new DigitalMultiChannelWriter(DOtask.Stream);
+                        DigitalMultiChannelWriter writer = new DigitalMultiChannelWriter(task.Stream);
                         writer.WriteMultiSamplePort(false, digitalBuffer);
                         // digital cards report number of samples generated up to multiple of 4
                         expectedSamplesGenerated = nSamples;
@@ -1041,29 +1032,14 @@ namespace AtticusServer
                     deviceSettings.TriggerInPort,
                     DigitalEdgeStartTriggerEdge.Rising);
 
-                if (usedPortNumbers.Count != 0)
-                {
-                    DOtask.Triggers.StartTrigger.ConfigureDigitalEdgeTrigger(
-                        deviceSettings.TriggerInPort,
-                        DigitalEdgeStartTriggerEdge.Rising);
-                }
             }
 
             task.Control(TaskAction.Verify);
             task.Control(TaskAction.Commit);
             task.Control(TaskAction.Reserve);
 
-            if (usedPortNumbers.Count != 0)
-            {
-                DOtask.Control(TaskAction.Verify);
-                DOtask.Control(TaskAction.Commit);
-                DOtask.Control(TaskAction.Reserve);
-            }
 
-            if (usedPortNumbers.Count != 0)
-                return new Task[] { task, DOtask };
-            else
-                return new Task[] { task };
+            return task;
         }
 
         /// <summary>
