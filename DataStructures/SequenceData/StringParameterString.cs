@@ -39,7 +39,7 @@ namespace DataStructures
 
         public override string ToString()
         {
-            return prefix + parameter.getBaseValue().ToString() + postfix;
+            return prefix + parameter.getBaseValue().ToString(System.Globalization.CultureInfo.InvariantCulture) + postfix;
         }
     }
 }

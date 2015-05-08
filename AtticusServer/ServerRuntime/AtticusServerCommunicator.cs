@@ -633,12 +633,15 @@ namespace AtticusServer
 					//First we determine if an analog in task should be created
                     foreach (DeviceSettings ds in AtticusServer.server.serverSettings.myDevicesSettings.Values)
                     {
-                        analogInCardDetected |= (ds.DeviceDescription.Contains("6259") || ds.DeviceDescription.Contains("6363")) && ds.AnalogInEnabled; // program will also support PXIe-6363 cards
+                        analogInCardDetected |= (ds.DeviceDescription.Contains("6229") ||ds.DeviceDescription.Contains("6259") || ds.DeviceDescription.Contains("6363")) && ds.AnalogInEnabled; // program will also support PXIe-6363 cards
                     }
 
                     if (analogInCardDetected)
                     {
                         // Creates the analog in task
+
+                        messageLog(this, new MessageEvent("Creating AnalogIn Task."));
+
                         analogS7ReadTask = new Task();
                         analogS7ReadTask.SynchronizeCallbacks = false;
                         analog_in_names = new List<string>();
@@ -833,7 +836,7 @@ namespace AtticusServer
                             //NationalInstruments.VisaNS.SerialSession device = new NationalInstruments.VisaNS.SerialSession(hc.ChannelName);
 
                             NationalInstruments.VisaNS.MessageBasedSession device;
-
+                            if (serialSessions != null) serialSessions.Clear();
                             try
                             {
                                 device = getSerialSession(hc);

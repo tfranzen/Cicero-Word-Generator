@@ -183,6 +183,8 @@ namespace AtticusServer
                     }
                     isDone = true;
 
+                    device.Dispose(); // try to properly close the connection
+
                     return false;
                 }
 
@@ -217,6 +219,9 @@ namespace AtticusServer
             //     }
             return true;
         }
+
+       
+
 
         private struct DoubleIntPair
         {
