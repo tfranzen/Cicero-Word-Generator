@@ -338,7 +338,7 @@ namespace WordGenerator
                 MessageEvent message = (MessageEvent)e;
                 if (!this.IsDisposed)
                 {
-                    this.textBox1.AppendText(message.MyTime.ToString() + " " + message.ToString() + "\r\n");
+                    this.textBox1.AppendText(message.MyTime.ToString("d.M.yyyy HH:mm:ss.fff") + " " + message.ToString() + "\r\n");
                 }
             }
         }
@@ -907,7 +907,10 @@ namespace WordGenerator
                             msg = Encoding.ASCII.GetBytes(shot_name + "@" + sequenceTime + "@" + FCamera + "@" + UCamera + "@" + isCameraSaving.ToString() + "@\0");
                             theSocket.Send(msg, 0, msg.Length, SocketFlags.None);
                         }
-                        catch { }
+                        catch {
+                            addMessageLogText(this, new MessageEvent("Error communicating with camera PC"));
+            
+                        }
                     }
                 }
                 #endregion
@@ -1070,7 +1073,7 @@ namespace WordGenerator
 
                 addMessageLogText(this, new MessageEvent("Finished run. Writing log file..."));
                 RunLog runLog = new RunLog(runStartTime, formCreationTime, sequence, Storage.settingsData, WordGenerator.MainClientForm.instance.OpenSequenceFileName, WordGenerator.MainClientForm.instance.OpenSettingsFileName);
-                string fileName = runLog.WriteLogFile();
+                /*string fileName = runLog.WriteLogFile();
 
                 if (fileName != null)
                 {
@@ -1081,7 +1084,7 @@ namespace WordGenerator
                     addMessageLogText(this, new MessageEvent("Log not written! Perhaps a file with this name already exists?"));
                     ErrorDetected = true;
                 }
-
+                */
                 foreach (RunLogDatabaseSettings rset in Storage.settingsData.RunlogDatabaseSettings)
                 {
 
@@ -1091,7 +1094,7 @@ namespace WordGenerator
                         try
                         {
                             handler = new RunlogDatabaseHandler(rset);
-                            handler.addRunLog(fileName, runLog);
+                            handler.addRunLog(NamingFunctions.get_fileStamp(sequence, Storage.settingsData, runStartTime), runLog);
                             addMessageLogText(this, new MessageEvent("Run log added to mysql database at url " + rset.Url + " successfully."));
                         }
                         catch (RunLogDatabaseException e)
